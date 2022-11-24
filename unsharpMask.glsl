@@ -32,7 +32,7 @@ vec4 hook() {
         weight = get_weight(i);
         csum += textureLod(PASS0_raw, PASS0_pos + PASS0_pt * vec2(0.0, -i), 0.0) * weight;
         csum += textureLod(PASS0_raw, PASS0_pos + PASS0_pt * vec2(0.0, i), 0.0) * weight;
-        wsum += weight + weight;
+        wsum += 2.0 * weight;
     }
     return csum / wsum;
 }
@@ -65,7 +65,7 @@ vec4 hook() {
         weight = get_weight(i);
         csum += textureLod(PASS1_raw, PASS1_pos + PASS1_pt * vec2(-i, 0.0), 0.0) * weight;
         csum += textureLod(PASS1_raw, PASS1_pos + PASS1_pt * vec2(i, 0.0), 0.0) * weight;
-        wsum += weight + weight;
+        wsum += 2.0 * weight;
     }
     vec4 original = textureLod(PASS0_raw, PASS0_pos, 0.0);
     return delinearize(original + (original - (csum / wsum)) * AMOUNT);
