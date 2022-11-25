@@ -18,3 +18,6 @@ Determines how many neighboring pixels will contribute to the blurred value of t
 
 #### Sharpening amount (AMOUNT) (Unsharp mask only)
 Sharpening amount or strenght.
+
+#### Threshold (THRESHOLD)
+Sets the minimum contrast for sharpening.
