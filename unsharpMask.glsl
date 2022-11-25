@@ -52,6 +52,7 @@ vec4 hook() {
 //
 //sharpnes
 #define AMOUNT 0.5 //amount of sharpening [0.0, 10+]
+#define THRESHOLD 0.0 //sets the minimum contrast for sharpening (e.g. 0.1), [0.0, 1.0]
 //
 ////////////////////////////////////////////////////////////////////////
 
@@ -68,5 +69,12 @@ vec4 hook() {
         wsum += 2.0 * weight;
     }
     vec4 original = textureLod(PASS0_raw, PASS0_pos, 0.0);
-    return delinearize(original + (original - (csum / wsum)) * AMOUNT);
+    vec4 mask = original - csum / wsum;
+    if (abs(2.0 * mask.r) >= THRESHOLD)
+        return delinearize(original + mask * AMOUNT);
+    if (abs(2.0 * mask.g) >= THRESHOLD)
+        return delinearize(original + mask * AMOUNT);
+    if (abs(2.0 * mask.b) >= THRESHOLD)
+        return delinearize(original + mask * AMOUNT);
+    return delinearize(original);
 }
