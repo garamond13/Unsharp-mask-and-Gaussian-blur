@@ -4,7 +4,7 @@
 //!DESC unsharp mask pass0
 
 vec4 hook() {
-    return linearize(textureLod(HOOKED_raw, HOOKED_pos, 0.0));
+    return clamp(linearize(textureLod(HOOKED_raw, HOOKED_pos, 0.0)), 0.0, 1.0);
 }
 
 //!HOOK MAIN
