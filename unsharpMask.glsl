@@ -69,10 +69,10 @@ vec4 hook() {
     vec4 original = textureLod(PASS0_raw, PASS0_pos, 0.0);
     vec4 mask = original - csum / wsum;
     if (abs(2.0 * mask.r) >= THRESHOLD)
-        return delinearize(original + mask * AMOUNT);
+        return delinearize(clamp(original + mask * AMOUNT, 0.0, 1.0));
     if (abs(2.0 * mask.g) >= THRESHOLD)
-        return delinearize(original + mask * AMOUNT);
+        return delinearize(clamp(original + mask * AMOUNT, 0.0, 1.0));
     if (abs(2.0 * mask.b) >= THRESHOLD)
-        return delinearize(original + mask * AMOUNT);
-    return delinearize(original);
+        return delinearize(clamp(original + mask * AMOUNT, 0.0, 1.0));
+    return delinearize(clamp(original, 0.0, 1.0));
 }
