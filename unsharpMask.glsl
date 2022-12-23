@@ -22,7 +22,7 @@ vec4 hook() {
 //
 ////////////////////////////////////////////////////////////////////////
 
-#define get_weight(x) (exp(-(x * x / (2.0 * SIGMA * SIGMA))))
+#define get_weight(x) (exp(-x * x / (2.0 * SIGMA * SIGMA)))
 
 vec4 hook() {
     float weight = get_weight(0.0);
@@ -55,7 +55,7 @@ vec4 hook() {
 //
 ////////////////////////////////////////////////////////////////////////
 
-#define get_weight(x) (exp(-(x * x / (2.0 * SIGMA * SIGMA))))
+#define get_weight(x) (exp(-x * x / (2.0 * SIGMA * SIGMA)))
 
 vec4 hook() {
     float weight = get_weight(0.0);
@@ -68,11 +68,7 @@ vec4 hook() {
     }
     vec4 original = textureLod(PASS0_raw, PASS0_pos, 0.0);
     vec4 mask = original - csum / wsum;
-    if (abs(2.0 * mask.r) >= THRESHOLD)
-        return delinearize(clamp(original + mask * AMOUNT, 0.0, 1.0));
-    if (abs(2.0 * mask.g) >= THRESHOLD)
-        return delinearize(clamp(original + mask * AMOUNT, 0.0, 1.0));
-    if (abs(2.0 * mask.b) >= THRESHOLD)
+    if (abs(mask.r) > THRESHOLD || abs(mask.g) > THRESHOLD || abs(mask.b) > THRESHOLD)
         return delinearize(clamp(original + mask * AMOUNT, 0.0, 1.0));
     return delinearize(clamp(original, 0.0, 1.0));
 }
