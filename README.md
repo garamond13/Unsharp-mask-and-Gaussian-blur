@@ -2,8 +2,8 @@
 MPV shaders, a 2 pass unsharp mask and a 2 pass gaussian blur. Similar to those in Photoshop, Image Magick, Gimp, etc.
 
 ## Usage
-If you place this shader in the same folder as your `mpv.conf`, you can use it with `glsl-shaders-append="~~/unsharpMask.glsl"` or `glsl-shaders-append="~~/gaussianBlur.glsl"`. \
-Requires `vo=gpu-next`.
+- If you place this shader in the same folder as your `mpv.conf`, you can use it with `glsl-shaders-append="~~/unsharpMask.glsl"` or `glsl-shaders-append="~~/gaussianBlur.glsl"`. \
+- Requires `vo=gpu-next`.
 
 ## Settings
 Note unsharp mask works like this, sharpened = original + (original − blurred) * amount.

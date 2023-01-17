@@ -4,7 +4,7 @@
 //!DESC unsharp mask pass0
 
 vec4 hook() {
-    return linearize(clamp(textureLod(HOOKED_raw, HOOKED_pos, 0.0), 0.0, 1.0));
+    return linearize(textureLod(HOOKED_raw, HOOKED_pos, 0.0));
 }
 
 //!HOOK MAIN
@@ -15,10 +15,10 @@ vec4 hook() {
 ////////////////////////////////////////////////////////////////////////
 // USER CONFIGURABLE, PASS 1 (blur in y axis)
 //
-//CAUTION! probably should use the same settings for "USER CONFIGURABLE, PASS 2" below
+// CAUTION! probably should use the same settings for "USER CONFIGURABLE, PASS 2" below
 //
 #define SIGMA 1.0 //blur spread or amount, (0.0, 10+]
-#define RADIUS 3.0 //kernel radius (integer as float, e.g. 3.0), (0.0, 10+]; probably should set it to ceil(3 * sigma)
+#define RADIUS 3.0 //kernel radius (integer as float, e.g. 3.0), (0.0, 10+]; probably should set it to ceil(3 * SIGMA)
 //
 ////////////////////////////////////////////////////////////////////////
 
@@ -44,10 +44,10 @@ vec4 hook() {
 ////////////////////////////////////////////////////////////////////////
 // USER CONFIGURABLE, PASS 2 (blur in x axis and aply unsharp mask)
 //
-//CAUTION! probably should use the same settings for "USER CONFIGURABLE, PASS 1" above
+// CAUTION! probably should use the same settings for "USER CONFIGURABLE, PASS 1" above
 //
 #define SIGMA 1.0 //blur spread or amount, (0.0, 10+]
-#define RADIUS 3.0 //kernel radius (integer as float, e.g. 3.0), (0.0, 10+]; probably should set it to ceil(3 * sigma)
+#define RADIUS 3.0 //kernel radius (integer as float, e.g. 3.0), (0.0, 10+]; probably should set it to ceil(3 * SIGMA)
 //
 //sharpnes
 #define AMOUNT 0.5 //amount of sharpening [0.0, 10+]
@@ -69,6 +69,6 @@ vec4 hook() {
     vec4 original = textureLod(PASS0_raw, PASS0_pos, 0.0);
     vec4 mask = original - csum / wsum;
     if (abs(mask.r) > THRESHOLD || abs(mask.g) > THRESHOLD || abs(mask.b) > THRESHOLD)
-        return delinearize(clamp(original + mask * AMOUNT, 0.0, 1.0));
-    return delinearize(clamp(original, 0.0, 1.0));
+        return delinearize(original + mask * AMOUNT);
+    return delinearize(original);
 }
