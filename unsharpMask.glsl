@@ -4,7 +4,7 @@
 //!DESC unsharp mask pass0
 
 vec4 hook() {
-    return linearize(textureLod(HOOKED_raw, HOOKED_pos, 0.0));
+    return linearize(textureLod(HOOKED_raw, HOOKED_pos, 0.0) * HOOKED_mul);
 }
 
 //!HOOK MAIN
@@ -26,11 +26,11 @@ vec4 hook() {
 
 vec4 hook() {
     float weight;
-    vec4 csum = textureLod(PASS0_raw, PASS0_pos, 0.0);
+    vec4 csum = textureLod(PASS0_raw, PASS0_pos, 0.0) * PASS0_mul;
     float wsum = 1.0;
     for(float i = 1.0; i <= RADIUS; ++i) {
         weight = get_weight(i);
-        csum += (textureLod(PASS0_raw, PASS0_pos + PASS0_pt * vec2(0.0, -i), 0.0) + textureLod(PASS0_raw, PASS0_pos + PASS0_pt * vec2(0.0, i), 0.0)) * weight;
+        csum += (textureLod(PASS0_raw, PASS0_pos + PASS0_pt * vec2(0.0, -i), 0.0) + textureLod(PASS0_raw, PASS0_pos + PASS0_pt * vec2(0.0, i), 0.0)) * PASS0_mul * weight;
         wsum += 2.0 * weight;
     }
     return csum / wsum;
@@ -59,14 +59,14 @@ vec4 hook() {
 
 vec4 hook() {
     float weight;
-    vec4 csum = textureLod(PASS1_raw, PASS1_pos, 0.0);
+    vec4 csum = textureLod(PASS1_raw, PASS1_pos, 0.0) * PASS1_mul;
     float wsum = 1.0;
     for(float i = 1.0; i <= RADIUS; ++i) {
         weight = get_weight(i);
-        csum += (textureLod(PASS1_raw, PASS1_pos + PASS1_pt * vec2(-i, 0.0), 0.0) + textureLod(PASS1_raw, PASS1_pos + PASS1_pt * vec2(i, 0.0), 0.0)) * weight;
+        csum += (textureLod(PASS1_raw, PASS1_pos + PASS1_pt * vec2(-i, 0.0), 0.0) + textureLod(PASS1_raw, PASS1_pos + PASS1_pt * vec2(i, 0.0), 0.0)) * PASS1_mul * weight;
         wsum += 2.0 * weight;
     }
-    vec4 original = textureLod(PASS0_raw, PASS0_pos, 0.0);
+    vec4 original = textureLod(PASS0_raw, PASS0_pos, 0.0) * PASS0_mul;
     vec4 mask = original - csum / wsum;
     if (abs(mask.r) > THRESHOLD || abs(mask.g) > THRESHOLD || abs(mask.b) > THRESHOLD)
         return delinearize(original + mask * AMOUNT);
