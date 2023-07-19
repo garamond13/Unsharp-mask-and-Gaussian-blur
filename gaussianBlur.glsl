@@ -1,7 +1,7 @@
 //!HOOK MAIN
 //!BIND HOOKED
 //!SAVE PASS0
-//!DESC gaussian blur pass0
+//!DESC gaussian blur pass1
 
 vec4 hook() {
     return linearize(textureLod(HOOKED_raw, HOOKED_pos, 0.0) * HOOKED_mul);
@@ -10,19 +10,19 @@ vec4 hook() {
 //!HOOK MAIN
 //!BIND PASS0
 //!SAVE PASS1
-//!DESC gaussian blur pass1
+//!DESC gaussian blur pass2
 
 ////////////////////////////////////////////////////////////////////////
-// USER CONFIGURABLE, PASS 1 (blur in y axis)
+// USER CONFIGURABLE, PASS 2 (blur in y axis)
 //
-// CAUTION! probably should use the same settings for "USER CONFIGURABLE, PASS 2" below
+// CAUTION! probably should use the same settings for "USER CONFIGURABLE, PASS 3" below
 //
 #define SIGMA 1.0 //blur spread or amount, (0.0, 10+]
-#define RADIUS 3.0 //kernel radius (integer as float, e.g. 3.0), (0.0, 10+]; probably should set it to ceil(3 * SIGMA)
+#define RADIUS 2.0 //kernel radius (integer as float, e.g. 3.0), (0.0, 10+]
 //
 ////////////////////////////////////////////////////////////////////////
 
-#define get_weight(x) (exp(-x * x / (2.0 * SIGMA * SIGMA)))
+#define get_weight(x) (exp(-(x) * (x) / (2.0 * SIGMA * SIGMA)))
 
 vec4 hook() {
     float weight;
@@ -38,19 +38,19 @@ vec4 hook() {
 
 //!HOOK MAIN
 //!BIND PASS1
-//!DESC gaussian blur pass2
+//!DESC gaussian blur pass3
 
 ////////////////////////////////////////////////////////////////////////
-// USER CONFIGURABLE, PASS 2 (blur in x axis)
+// USER CONFIGURABLE, PASS 3 (blur in x axis)
 //
-// CAUTION! probably should use the same settings for "USER CONFIGURABLE, PASS 1" above
+// CAUTION! probably should use the same settings for "USER CONFIGURABLE, PASS 2" above
 //
 #define SIGMA 1.0 //blur spread or amount, (0.0, 10+]
-#define RADIUS 3.0 //kernel radius (integer as float, e.g. 3.0), (0.0, 10+]; probably should set it to ceil(3 * SIGMA)
+#define RADIUS 2.0 //kernel radius (integer as float, e.g. 3.0), (0.0, 10+]
 //
 ////////////////////////////////////////////////////////////////////////
 
-#define get_weight(x) (exp(-x * x / (2.0 * SIGMA * SIGMA)))
+#define get_weight(x) (exp(-(x) * (x) / (2.0 * SIGMA * SIGMA)))
 
 vec4 hook() {
     float weight;
